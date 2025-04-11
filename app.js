@@ -1,8 +1,10 @@
+var jwt = require('jsonwebtoken');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -10,11 +12,17 @@ var LoginRouter = require('./routes/Login');
 
 var app = express();
 
+const loggerMiddleware = (req, res, next) => {
+  console.log(`${req.method} request made to: ${req.url}`);
+  next(); // Pass control to the next middleware or route handler
+};
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(loggerMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

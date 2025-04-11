@@ -1,3 +1,4 @@
+var jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const { Sequelize, DataTypes } = require('sequelize');
@@ -51,6 +52,7 @@ router.post('/', async (req, res) => {
       return res.json({ message: "Invalid Username. Only lowercase letters allowed." });
     }
 
+    var token = jwt.sign({ username: 'pallavi' }, 'secret');
     // Valid username and found Return userdetails
     return res.json({
       message: "Valid Username",
@@ -58,7 +60,7 @@ router.post('/', async (req, res) => {
         id: user.id,
         username: user.username,
         password: user.password,
-      }
+      },token
     });
 
   } catch (error) {
